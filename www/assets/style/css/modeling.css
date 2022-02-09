@@ -1,0 +1,119 @@
+.content .generators_statistic {
+  margin-top: 10px;
+}
+.content .generators_statistic .header {
+  display: flex;
+  justify-content: space-between;
+}
+.content .generators_statistic .generators_statistic_list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.content .generators_statistic .generators_statistic_list::-webkit-scrollbar {
+  width: 5px;
+}
+.content .generators_statistic .generators_statistic_list::-webkit-scrollbar-thumb {
+  transition: all 0.2s;
+  background-color: lightgray;
+  border-radius: 4px;
+}
+.content .generators_statistic .generators_statistic_list::-webkit-scrollbar-track {
+  background: white;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line {
+  display: flex;
+  margin-top: 5px;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line div {
+  overflow: hidden;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line .number {
+  width: 90px;
+  margin-right: 24px;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line .number_of_requests {
+  width: 150px;
+  margin-right: 24px;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line .probability_of_refuse {
+  width: 190px;
+  margin-right: 27px;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line .avg_time_of_work {
+  width: 190px;
+  margin-right: 20px;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line .avg_time_of_buffering {
+  width: 170px;
+  margin-right: 28px;
+}
+.content .generators_statistic .generators_statistic_list .generator_statistic_line .avg_time_of_handling {
+  width: 120px;
+}
+.content .handlers_statistic {
+  margin-top: 10px;
+  width: 350px;
+}
+.content .handlers_statistic .header {
+  display: flex;
+  justify-content: space-between;
+}
+.content .handlers_statistic .handlers_statistic_list {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.content .handlers_statistic .handlers_statistic_list::-webkit-scrollbar {
+  width: 5px;
+}
+.content .handlers_statistic .handlers_statistic_list::-webkit-scrollbar-thumb {
+  background-color: lightgray;
+  border-radius: 4px;
+}
+.content .handlers_statistic .handlers_statistic_list::-webkit-scrollbar-track {
+  background: white;
+}
+.content .handlers_statistic .handlers_statistic_list .handlers_statistic_line {
+  display: flex;
+  margin-top: 5px;
+}
+.content .handlers_statistic .handlers_statistic_list .handlers_statistic_line div {
+  overflow: hidden;
+}
+.content .handlers_statistic .handlers_statistic_list .handlers_statistic_line .number {
+  width: 160px;
+  margin-right: 21px;
+}
+.content .handlers_statistic .handlers_statistic_list .handlers_statistic_line .rate_of_usability {
+  width: 160px;
+}
+.content .loader {
+  width: min-content;
+  height: min-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+}
+.content .requests_list {
+  max-height: 600px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+.content .requests_list::-webkit-scrollbar {
+  width: 5px;
+}
+.content .requests_list::-webkit-scrollbar-thumb {
+  background-color: lightgray;
+  border-radius: 4px;
+}
+.content .requests_list::-webkit-scrollbar-track {
+  background: white;
+}
+.content .requests_list div:first-child {
+  margin-top: 0;
+}
+.content .requests_list .request {
+  margin-top: 20px;
+}
+
+/*# sourceMappingURL=modeling.css.map */

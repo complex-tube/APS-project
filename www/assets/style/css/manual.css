@@ -1,0 +1,62 @@
+.content .content_container .button {
+  margin-top: 20px;
+}
+.content .content_container .timing_diagram {
+  display: flex;
+  margin-top: 40px;
+  width: 100%;
+  height: auto;
+  overflow-y: hidden;
+}
+.content .content_container .timing_diagram .titles .title {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 60px;
+  font-size: 16px;
+  line-height: normal;
+  text-align: left;
+}
+.content .content_container .timing_diagram .values {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.content .content_container .timing_diagram > div > div > div {
+  height: 19px;
+  display: flex;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.content .content_container .timing_diagram > div > div > div > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+}
+.content .content_container .timing_diagram .refuses {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 19px;
+  display: flex;
+}
+.content .content_container .timing_diagram .refuses > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  padding: 0;
+}
+.content .content_container .timing_diagram .times {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 19px;
+  display: flex;
+}
+.content .content_container .timing_diagram .times > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  padding: 0;
+}
+
+/*# sourceMappingURL=manual.css.map */

@@ -1,0 +1,45 @@
+.content {
+
+  .content_container {
+
+    .title {
+      padding-top: 0;
+    }
+
+    .device_picker {
+      display: flex;
+      flex-direction: column;
+      margin: {
+        top: 10px;
+      };
+
+      div {
+        font: {
+          size: 18px;
+          weight: 500;
+        };
+        margin: {
+          top: 5px;
+        };
+      }
+
+      div:first-child {
+        margin: {
+          top: 0;
+        };
+      }
+    }
+
+    .button {
+      margin-top: 10px;
+    }
+
+    .modeling {
+      margin-top: 20px;
+    }
+
+    .chart {
+      margin-top: 20px;
+    }
+  }
+}

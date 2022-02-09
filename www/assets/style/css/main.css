@@ -1,0 +1,126 @@
+html {
+  font-family: "Gilroy", sans-serif;
+  font-weight: 500;
+  color: black;
+  overflow-x: hidden;
+}
+
+input {
+  font-family: "Gilroy", sans-serif;
+  font-weight: 500;
+  color: black;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F8F9FB;
+}
+body::-webkit-scrollbar {
+  width: 5px;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: lightgray;
+  border-radius: 4px;
+}
+body::-webkit-scrollbar-track {
+  background: white;
+}
+body .content {
+  width: 1200px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  margin-left: 360px;
+  margin-bottom: 40px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background: white;
+  border-radius: 10px;
+}
+body .content .content_container {
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.title {
+  font-size: 34px;
+  line-height: 40px;
+  padding-top: 50px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  width: 200px;
+  transition: background-color 0.2s;
+  background: #4385F6;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+.button:hover {
+  transition: background-color 0.2s;
+  background: #0b61f4;
+}
+
+.hidden {
+  visibility: hidden;
+}
+.hidden.full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+input {
+  padding: 0;
+  margin: 0;
+}
+
+input[type=number] {
+  border: none;
+  border-radius: 4px;
+  height: 40px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  min-width: 200px;
+  -moz-appearance: textfield;
+}
+input[type=number]:focus {
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.inputs_block {
+  margin-top: 10px;
+}
+.inputs_block input {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 5px;
+}
+.inputs_block .input_block {
+  display: flex;
+  flex-direction: column;
+}
+.inputs_block .model_inputs {
+  display: flex;
+  justify-content: space-between;
+}
+.inputs_block .requests_number {
+  margin-top: 10px;
+}
+
+/*# sourceMappingURL=main.css.map */

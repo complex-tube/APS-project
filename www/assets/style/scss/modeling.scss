@@ -1,0 +1,158 @@
+.content {
+
+  .generators_statistic {
+    margin: {
+      top: 10px;
+    };
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .generators_statistic_list {
+      max-height: 300px;
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        transition: all 0.2s;
+        background-color: lightgray;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: white;
+      }
+
+      .generator_statistic_line {
+        display: flex;
+        margin-top: 5px;
+
+        & div {
+          overflow: hidden;
+        }
+
+        .number {
+          width: 90px;
+          margin-right: 24px;
+        }
+
+        .number_of_requests {
+          width: 150px;
+          margin-right: 24px;
+        }
+
+        .probability_of_refuse {
+          width: 190px;
+          margin-right: 27px;
+        }
+
+        .avg_time_of_work {
+          width: 190px;
+          margin-right: 20px;
+        }
+
+        .avg_time_of_buffering {
+          width: 170px;
+          margin-right: 28px;
+        }
+
+        .avg_time_of_handling {
+          width: 120px;
+        }
+      }
+    }
+  }
+
+  .handlers_statistic {
+    margin: {
+      top: 10px;
+    };
+    width: 350px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .handlers_statistic_list {
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: lightgray;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: white;
+      }
+
+      .handlers_statistic_line {
+        display: flex;
+        margin-top: 5px;
+
+        & div {
+          overflow: hidden;
+        }
+
+        .number {
+          width: 160px;
+          margin-right: 21px;
+        }
+
+        .rate_of_usability {
+          width: 160px;
+        }
+      }
+    }
+  }
+
+  .loader {
+    width: min-content;
+    height: min-content;
+    margin: {
+      left: auto;
+      right: auto;
+      top: 40px;
+    };
+  }
+
+  .requests_list {
+    max-height: 600px;
+    overflow-y: auto;
+    margin: {
+      top: 10px;
+    };
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: lightgray;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: white;
+    }
+
+    & div:first-child {
+      margin-top: 0;
+    }
+
+    .request {
+      margin-top: 20px;
+    }
+  }
+}

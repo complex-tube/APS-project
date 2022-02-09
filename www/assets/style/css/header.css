@@ -1,0 +1,27 @@
+header {
+  width: 100vw;
+}
+header .menu {
+  display: flex;
+  align-items: center;
+  height: 100px;
+  margin-left: 360px;
+}
+header .menu .mode_type {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  transition: color 0.2s;
+  color: #4385F6;
+  text-decoration: none;
+  margin-right: 50px;
+}
+header .menu .mode_type.no_select {
+  color: #000000;
+}
+header .menu .mode_type:hover {
+  transition: color 0.2s;
+  color: #4385F6;
+}
+
+/*# sourceMappingURL=header.css.map */

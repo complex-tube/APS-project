@@ -1,0 +1,87 @@
+.content {
+
+  .content_container {
+
+    .button {
+      margin-top: 20px;
+    }
+
+    .timing_diagram {
+      display: flex;
+      margin-top: 40px;
+      width: 100%;
+      height: auto;
+      overflow-y: hidden;
+
+      .titles {
+
+        .title {
+          padding: {
+            top: 5px;
+            bottom: 5px;
+          }
+          min-width: 60px;
+          font-size: 16px;
+          line-height: normal;
+          text-align: left;
+        }
+      }
+
+      .values {
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+
+      & > div > div > div {
+        height: 19px;
+        display: flex;
+        padding: {
+          top: 5px;
+          bottom: 5px;
+        }
+
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 100px;
+        }
+      }
+
+      .refuses {
+        padding: {
+          top: 5px;
+          bottom: 5px;
+        }
+        height: 19px;
+        display: flex;
+
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 100px;
+          padding: 0;
+        }
+      }
+
+      .times {
+        padding: {
+          top: 5px;
+          bottom: 5px;
+        }
+        height: 19px;
+        display: flex;
+
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 100px;
+          padding: 0;
+        }
+      }
+    }
+  }
+}

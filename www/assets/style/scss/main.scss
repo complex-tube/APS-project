@@ -1,0 +1,150 @@
+html {
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 500;
+  color: black;
+  overflow-x: hidden;
+}
+
+input {
+  font: {
+    family: "Gilroy", sans-serif;
+    weight: 500;
+  }
+  color: black;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F8F9FB;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: lightgray;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: white;
+  }
+
+  .content {
+    width: 1200px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    margin: auto {
+      left: 360px;
+      bottom: 40px;
+    }
+    padding: {
+      top: 50px;
+      bottom: 50px;
+    };
+    background: white;
+    border-radius: 10px;
+
+    .content_container {
+      margin: {
+        left: 80px;
+        right: 80px;
+      };
+    }
+  }
+}
+
+.title {
+  font-size: 34px;
+  line-height: 40px;
+  padding-top: 50px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  width: 200px;
+  transition: background-color 0.2s;
+  background: #4385F6;
+  color: #ffffff;
+  cursor: pointer;
+  font: {
+    weight: 600;
+    size: 16px;
+  };
+  line-height: 19px;
+  border-radius: 10px;
+  margin: {
+    top: 20px;
+  };
+
+  &:hover {
+    transition: background-color 0.2s;
+    background: #0b61f4;
+  }
+}
+
+.hidden {
+  visibility: hidden;
+  &.full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+input {
+  padding: 0;
+  margin: 0;
+}
+
+input[type=number] {
+  border: none;
+  border-radius: 4px;
+  height: 40px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  min-width: 200px;
+  -moz-appearance: textfield;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.inputs_block {
+  margin: {
+    top: 10px;
+  };
+
+  input {
+    padding: {
+      left: 15px;
+      right: 15px;
+    };
+    margin-top: 5px;
+  }
+
+  .input_block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .model_inputs {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .requests_number {
+    margin-top: 10px;
+  }
+}
