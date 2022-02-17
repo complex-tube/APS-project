@@ -177,36 +177,32 @@ function requestFromBuffersStepTimingDiagram(freeModelState) {
 }
 
 function lastRequestsStepTimingDiagram(minHandler) {
-    for (let handlerCounter = 0; handlerCounter < model.handlerController.handlersList.length; handlerCounter++) {
-        generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
-            const requestElement = requestTemplate.cloneNode(true);
-            generatorElement.appendChild(requestElement);
-            requestElement.show();
-        });
-        model.handlerController.handlersList.forEach((handler, handlerIndex) => {
-            const requestElement = requestTemplate.cloneNode(true);
-            if (handler.request.isShown !== true) {
-                requestElement.textContent = `${handler.request.generatorId}.${handler.request.requestId}`;
-            }
-            handlerLines.querySelectorAll('.handler')[handlerIndex].appendChild(requestElement);
-            requestElement.show();
-        });
-        bufferLines.querySelectorAll('.buffer').forEach((bufferElement, bufferElementIndex) => {
-            const requestElement = requestTemplate.cloneNode(true);
-            bufferElement.appendChild(requestElement);
-            requestElement.show();
-        });
-        const timeElementForRefuse = timeTemplate.cloneNode(true);
-        const timeElementForTimer = timeTemplate.cloneNode(true);
-        timeElementForTimer.textContent = minHandler.releasedTime.toFixed(6);
-        refuseLine.appendChild(timeElementForRefuse);
-        timeLine.appendChild(timeElementForTimer);
-        timeElementForRefuse.show();
-        timeElementForTimer.show();
-        timeLine.show();
-        minHandler.request.isShown = true;
-        minHandler.releasedTime = Number.MAX_SAFE_INTEGER;
-    }
+    generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
+        const requestElement = requestTemplate.cloneNode(true);
+        generatorElement.appendChild(requestElement);
+        requestElement.show();
+    });
+    model.handlerController.handlersList.forEach((handler, handlerIndex) => {
+        const requestElement = requestTemplate.cloneNode(true);
+        if (handler.request.isShown !== true && handler.handlerId !== minHandler.handlerId) {
+            requestElement.textContent = `${handler.request.generatorId}.${handler.request.requestId}`;
+        }
+        handlerLines.querySelectorAll('.handler')[handlerIndex].appendChild(requestElement);
+        requestElement.show();
+    });
+    bufferLines.querySelectorAll('.buffer').forEach((bufferElement, bufferElementIndex) => {
+        const requestElement = requestTemplate.cloneNode(true);
+        bufferElement.appendChild(requestElement);
+        requestElement.show();
+    });
+    const timeElementForRefuse = timeTemplate.cloneNode(true);
+    const timeElementForTimer = timeTemplate.cloneNode(true);
+    timeElementForTimer.textContent = minHandler.releasedTime.toFixed(6);
+    refuseLine.appendChild(timeElementForRefuse);
+    timeLine.appendChild(timeElementForTimer);
+    timeElementForRefuse.show();
+    timeElementForTimer.show();
+    timeLine.show();
 }
 
 generateButtonElement.onclick = () => {
@@ -234,12 +230,23 @@ stepForwardButtonElement.onclick = () => {
     } else if (model.buffer.isAnyBufferUnitFilled()) {
         const requestFreeBufferStructure = model.getterController.freeBuffer();
         requestFromBuffersStepTimingDiagram(requestFreeBufferStructure);
-        //console.log(model.buffer.getBuffersList());
-        //getterStepTimingDiagram([requestFreeBufferStructure]);
     } else {
-        const minHandler = model.handlerController.getMinHandler();
-        if (minHandler.request.isShown !== true) {
-            lastRequestsStepTimingDiagram(minHandler);
+        if (model.handlerController.getMinHandler().request.isShown === false) {
+            const handlersList = [];
+            for (let handlersCounter = 0; handlersCounter < model.handlerController.handlersList.length; handlersCounter++) {
+                handlersList.push(model.handlerController.handlersList[handlersCounter]);
+            }
+            while (handlersList.length !== 0) {
+                let minHandler = handlersList[0];
+                for (let handlerCounter = 1; handlerCounter < handlersList.length; handlerCounter++) {
+                    if (handlersList[handlerCounter].releasedTime < minHandler.releasedTime) {
+                        minHandler = handlersList[handlerCounter];
+                    }
+                }
+                lastRequestsStepTimingDiagram(minHandler);
+                minHandler.request.isShown = true;
+                handlersList.splice(handlersList.indexOf(minHandler), 1);
+            }
         }
     }
 }

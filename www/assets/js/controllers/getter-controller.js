@@ -36,7 +36,6 @@ class GetterController {
                 break;
             }
         }
-        console.log(returnStates);
         return returnStates;
     }
 

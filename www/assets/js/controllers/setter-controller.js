@@ -14,11 +14,15 @@ class SetterController {
             isRefused: false,
             refusedRequestId: 0
         }
-        if (this.buffer.isAnyBufferUnitFree() === true) {
-            this.sendRequestToBuffer(request);
+        if (this.handlerController.getFreeHandler(request.generatedTime) !== null) {
+            this.sendRequestToHandler(request);
         } else {
-            returnStructure.refusedRequestId = this.sendRequestToRefuse(request).requestId;
-            returnStructure.isRefused = true;
+            if (this.buffer.isAnyBufferUnitFree() === true) {
+                this.sendRequestToBuffer(request);
+            } else {
+                returnStructure.refusedRequestId = this.sendRequestToRefuse(request).requestId;
+                returnStructure.isRefused = true;
+            }
         }
         returnStructure.requestId = request.requestId;
         returnStructure.bufferId = request.bufferId;
