@@ -23,7 +23,6 @@ const handlerLineTemplate = document.querySelector('.handler.hidden');
 const bufferLineTemplate = document.querySelector('.buffer.hidden');
 const requestTemplate = document.querySelector('.request.hidden');
 const timeTemplate = document.querySelector('.time.hidden');
-const chartElement = document.querySelector('.content .chart');
 
 let model = null;
 let requestsCounter = 0;
@@ -75,7 +74,6 @@ function setterStepTimingDiagram(requestStructureFromSetterController) {
         generatorElement.appendChild(requestElement);
         requestElement.show();
     });
-
     model.handlerController.handlersList.forEach((handler, handlerElementIndex) => {
         const requestElement = requestTemplate.cloneNode(true);
         if (handler.request !== null && handler.request.releasedTime > requestStructureFromSetterController.generatedTime) {
@@ -146,6 +144,71 @@ function getterStepTimingDiagram(requestStructureFromGetterController) {
     });
 }
 
+function requestFromBuffersStepTimingDiagram(freeModelState) {
+    generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
+        const requestElement = requestTemplate.cloneNode(true);
+        generatorElement.appendChild(requestElement);
+        requestElement.show();
+    });
+    freeModelState.handlersState.forEach((request, requestIndex) => {
+        const requestElement = requestTemplate.cloneNode(true);
+        if (request.handlerId !== freeModelState.request.handlerId) {
+            requestElement.textContent = `${request.generatorId}.${request.requestId}`;
+        }
+        handlerLines.querySelectorAll('.handler')[requestIndex].appendChild(requestElement);
+        requestElement.show();
+    });
+    freeModelState.buffersState.forEach((request, requestIndex) => {
+        const requestElement = requestTemplate.cloneNode(true);
+        if (request !== null) {
+            requestElement.textContent = `${request.generatorId}.${request.requestId}`;
+        }
+        bufferLines.querySelectorAll('.buffer')[requestIndex].appendChild(requestElement);
+        requestElement.show();
+    });
+    const timeElementForRefuse = timeTemplate.cloneNode(true);
+    const timeElementForTimer = timeTemplate.cloneNode(true);
+    timeElementForTimer.textContent = `${freeModelState.request.bufferedTime.toFixed(6)}`;
+    refuseLine.appendChild(timeElementForRefuse);
+    timeLine.appendChild(timeElementForTimer);
+    timeElementForRefuse.show();
+    timeElementForTimer.show();
+    timeLine.show();
+}
+
+function lastRequestsStepTimingDiagram(minHandler) {
+    for (let handlerCounter = 0; handlerCounter < model.handlerController.handlersList.length; handlerCounter++) {
+        generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
+            const requestElement = requestTemplate.cloneNode(true);
+            generatorElement.appendChild(requestElement);
+            requestElement.show();
+        });
+        model.handlerController.handlersList.forEach((handler, handlerIndex) => {
+            const requestElement = requestTemplate.cloneNode(true);
+            if (handler.request.isShown !== true) {
+                requestElement.textContent = `${handler.request.generatorId}.${handler.request.requestId}`;
+            }
+            handlerLines.querySelectorAll('.handler')[handlerIndex].appendChild(requestElement);
+            requestElement.show();
+        });
+        bufferLines.querySelectorAll('.buffer').forEach((bufferElement, bufferElementIndex) => {
+            const requestElement = requestTemplate.cloneNode(true);
+            bufferElement.appendChild(requestElement);
+            requestElement.show();
+        });
+        const timeElementForRefuse = timeTemplate.cloneNode(true);
+        const timeElementForTimer = timeTemplate.cloneNode(true);
+        timeElementForTimer.textContent = minHandler.releasedTime.toFixed(6);
+        refuseLine.appendChild(timeElementForRefuse);
+        timeLine.appendChild(timeElementForTimer);
+        timeElementForRefuse.show();
+        timeElementForTimer.show();
+        timeLine.show();
+        minHandler.request.isShown = true;
+        minHandler.releasedTime = Number.MAX_SAFE_INTEGER;
+    }
+}
+
 generateButtonElement.onclick = () => {
     document.querySelectorAll('body .inputs_block input').forEach((inputElement) => {
         inputElement.disabled = true;
@@ -170,7 +233,13 @@ stepForwardButtonElement.onclick = () => {
         requestsCounter++;
     } else if (model.buffer.isAnyBufferUnitFilled()) {
         const requestFreeBufferStructure = model.getterController.freeBuffer();
-        console.log(model.buffer.getBuffersList());
+        requestFromBuffersStepTimingDiagram(requestFreeBufferStructure);
+        //console.log(model.buffer.getBuffersList());
         //getterStepTimingDiagram([requestFreeBufferStructure]);
+    } else {
+        const minHandler = model.handlerController.getMinHandler();
+        if (minHandler.request.isShown !== true) {
+            lastRequestsStepTimingDiagram(minHandler);
+        }
     }
 }

@@ -41,22 +41,24 @@ class GetterController {
     }
 
     freeBuffer() {
-        const returnStructure = {
-            oldRequest: null,
-            handlersState: [],
-            buffersState: [],
-        }
         const minHandler = this.handlerController.getMinHandler();
-        returnStructure.oldRequest = minHandler.request;
-        for (let handlerCounter = 0; handlerCounter < this.handlerController.handlersList.length; handlerCounter++) {
-            returnStructure.handlersState.push(this.handlerController.handlersList[handlerCounter].request);
-        }
-        for (let bufferCounter = 0; bufferCounter < this.buffer.bufferLength; bufferCounter++) {
-            returnStructure.buffersState.push(this.buffer.getBufferById(bufferCounter + 1).getRequest());
-        }
         const request = this.buffer.getRequest(minHandler.releasedTime);
+        const returnStructure = {
+            request: request,
+            handlersState: null,
+            buffersState: null
+        };
+        const handlersState = [];
+        for (let handlersCounter = 0; handlersCounter < this.handlerController.handlersList.length; handlersCounter++) {
+            handlersState.push(this.handlerController.handlersList[handlersCounter].request);
+        }
+        const buffersState = [];
+        for (let bufferCounter = 0; bufferCounter < this.buffer.bufferLength; bufferCounter++) {
+            buffersState.push(this.buffer.getBufferById(bufferCounter + 1).getRequest());
+        }
+        returnStructure.handlersState = handlersState;
+        returnStructure.buffersState = buffersState;
         this.sendLastRequestFromBuffer(request);
-        console.log(returnStructure);
         return returnStructure;
     }
 

@@ -57,11 +57,30 @@ class HandlerController {
     getMinHandler() {
         let minHandler = this.handlersList[0];
         for (let handlerCounter = 1; handlerCounter < this.handlersList.length; handlerCounter++) {
-            if (minHandler.releasedTime < this.handlersList[handlerCounter].releasedTime) {
-                return this.handlersList[handlerCounter];
+            if (this.handlersList[handlerCounter].releasedTime < minHandler.releasedTime) {
+                minHandler = this.handlersList[handlerCounter];
             }
         }
         return minHandler;
+    }
+
+    getMaxHandler() {
+        let maxHandler = this.handlersList[0];
+        for (let handlerCounter = 1; handlerCounter < this.handlersList.length; handlerCounter++) {
+            if (this.handlersList[handlerCounter].releasedTime > maxHandler.releasedTime) {
+                maxHandler = this.handlersList[handlerCounter];
+            }
+        }
+        return maxHandler;
+    }
+
+    isAnyHandlerWorking(timePoint) {
+        for (let handlerCounter = 0; handlerCounter < this.handlersList.length; handlerCounter++) {
+            if (this.handlersList[handlerCounter].releasedTime > timePoint) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
