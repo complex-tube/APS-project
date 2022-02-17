@@ -6,18 +6,6 @@ class SetterController {
         this.buffer = buffer;
     }
     work(request) {
-        // const freeHandler = this.handlerController.getFreeHandler(request.generatedTime);
-        // if (freeHandler !== null) {
-        //     if (this.buffer.isAnyBufferUnitFree() === true) {
-        //         return this.sendRequestToHandler(request);
-        //     }
-        // } else {
-        //     if (this.buffer.isAnyBufferUnitFree() === true) {
-        //         return this.sendRequestToBuffer(request);
-        //     } else {
-        //         return this.sendRequestToRefuse(request);
-        //     }
-        // }
         const returnStructure = {
             requestId: 0,
             bufferId: 0,

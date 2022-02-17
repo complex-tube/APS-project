@@ -5,7 +5,7 @@ class Handler {
     sumOfWorkTime = 0;
     rateOfUsability = 0;
     handlerId;
-    request;
+    request = null;
 
     constructor() {
         Handler.handlerId++;
@@ -19,14 +19,10 @@ class Handler {
         this.request = request;
         request.releasedTime = this.releasedTime = (request.bufferedTime + randomNumber);
         request.handlerId = this.handlerId;
+        request.isShown = false;
     }
 
     calculateRateOfUsability(requestsList, sumTimeOfWork) {
-        // requestsList.forEach(request => {
-        //    if (request.releasedTime !== 0 && request.handlerId === this.handlerId) {
-        //        this.rateOfUsability += (request.releasedTime - request.bufferedTime);
-        //    }
-        // });
         this.rateOfUsability /= sumTimeOfWork;
     }
 }
@@ -46,6 +42,16 @@ class HandlerController {
             }
         }
         return null;
+    }
+
+    getFreeHandlers(timePoint) {
+        const freeHandlers = [];
+        for (let handlerCounter = 0; handlerCounter < this.handlersList.length; handlerCounter++) {
+            if (this.handlersList[handlerCounter].releasedTime <= timePoint) {
+                freeHandlers.push(this.handlersList[handlerCounter]);
+            }
+        }
+        return freeHandlers;
     }
 
     getMinHandler() {

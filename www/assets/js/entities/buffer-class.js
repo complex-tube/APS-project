@@ -34,7 +34,7 @@ class Buffer {
     refusedList = Array();
 
     constructor(bufferLength) {
-        this.bufferLength = bufferLength;
+        this.bufferLength = Number(bufferLength);
         const initBufferUnit = new BufferUnit();
         this.currentSetterBuffer = this.currentGetterBuffer = this.currentBufferPointer = initBufferUnit;
         for (let bufferUnitCounter = 1; bufferUnitCounter < bufferLength; bufferUnitCounter++) {
@@ -69,6 +69,27 @@ class Buffer {
             }
             this.currentGetterBuffer = this.currentGetterBuffer.getNextBufferUnit();
         }
+        return null;
+    }
+
+    getBufferById(bufferId) {
+        for (let bufferCounter = 0; bufferCounter < this.bufferLength; bufferCounter++) {
+            if (this.currentBufferPointer.bufferId === bufferId) {
+                const bufferUnitById = this.currentBufferPointer;
+                this.currentBufferPointer = this.currentBufferPointer.getNextBufferUnit();
+                return bufferUnitById;
+            }
+            this.currentBufferPointer = this.currentBufferPointer.getNextBufferUnit();
+        }
+        return null;
+    }
+
+    getBuffersList() {
+        const buffersList = [];
+        for (let bufferCounter = 0; bufferCounter < this.bufferLength; bufferCounter++) {
+            buffersList.push(this.getBufferById(bufferCounter + 1));
+        }
+        return buffersList;
     }
 
     refuseRequest(request) {
@@ -89,25 +110,21 @@ class Buffer {
 
     isAnyBufferUnitFree() {
         for (let bufferCounter = 0; bufferCounter < this.bufferLength; bufferCounter++) {
-            this.currentBufferPointer = this.currentBufferPointer.getNextBufferUnit();
             if (this.currentBufferPointer.getRequest() === null) {
                 return true;
             }
+            this.currentBufferPointer = this.currentBufferPointer.getNextBufferUnit();
         }
         return false;
     }
 
     isAnyBufferUnitFilled() {
         for (let bufferCounter = 0; bufferCounter < this.bufferLength; bufferCounter++) {
-            this.currentBufferPointer = this.currentBufferPointer.getNextBufferUnit();
             if (this.currentBufferPointer.getRequest() !== null) {
                 return true;
             }
+            this.currentBufferPointer = this.currentBufferPointer.getNextBufferUnit();
         }
         return false;
-    }
-
-    toString() {
-
     }
 }

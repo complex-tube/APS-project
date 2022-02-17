@@ -24,8 +24,8 @@ class Model {
         Request.requestId = 0;
         this.generatorController.generateRequests(requestsNumber);
         this.generatorController.requestsList.forEach((request) => {
-            this.setterController.work(request);
             this.getterController.work(request);
+            this.setterController.work(request);
         });
         while (this.buffer.isAnyBufferUnitFilled()) {
             this.getterController.freeBuffer();

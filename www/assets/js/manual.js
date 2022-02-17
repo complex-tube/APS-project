@@ -13,7 +13,6 @@ const handlerTitleTemplate = document.querySelector('.handler_title.hidden');
 const bufferTitleTemplate = document.querySelector('.buffer_title.hidden');
 const refuseTitleTemplate = document.querySelector('.refuse_title.hidden');
 const timeTitleTemplate = document.querySelector('.time_title.hidden');
-const timingDiagramValues = document.querySelector('.content .content_container .timing_diagram .values');
 const generatorLines = document.querySelector('.content .content_container .generators');
 const handlerLines = document.querySelector('.content .content_container .handlers');
 const bufferLines = document.querySelector('.content .content_container .buffers');
@@ -28,7 +27,6 @@ const chartElement = document.querySelector('.content .chart');
 
 let model = null;
 let requestsCounter = 0;
-//const chartDrawer = new ChartDrawer(chartElement);
 
 function initTimingDiagram(model) {
     model.generatorController.generatorsList.forEach(generator => {
@@ -68,50 +66,7 @@ function initTimingDiagram(model) {
     timeTitle.show();
 }
 
-function stepTimingDiagram(requestStructureFromSetterController) {
-    const sortedHandlers = [];
-    model.handlerController.handlersList.forEach((handler, handlerIndex) => {
-        if (handler.releasedTime < requestStructureFromSetterController.generatedTime && handler.releasedTime !== 0) {
-            sortedHandlers.push(handler);
-        }
-        console.log(`${handler.releasedTime}`);
-    });
-    sortedHandlers.sort((firstElement, secondElement) => {
-        return firstElement.releasedTime - secondElement.releasedTime;
-    });
-    console.log(sortedHandlers);
-    sortedHandlers.forEach(sortedHandler => {
-        generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
-            const requestElement = requestTemplate.cloneNode(true);
-            generatorElement.appendChild(requestElement);
-            requestElement.show();
-        });
-        model.handlerController.handlersList.forEach((handler, handlerElementIndex) => {
-            const requestElement = requestTemplate.cloneNode(true);
-            if ((handlerElementIndex + 1) !== sortedHandler.handlerId && handler.request !== undefined) {
-                requestElement.textContent = `${handler.request.generatorId}.${handler.request.requestId}`;
-            }
-            handlerLines.querySelectorAll('.handler')[handlerElementIndex].appendChild(requestElement);
-            requestElement.show();
-            sortedHandler.request = undefined;
-        });
-        bufferLines.querySelectorAll('.buffer').forEach((bufferElement, bufferElementIndex) => {
-            const requestElement = requestTemplate.cloneNode(true);
-            if (requestStructureFromSetterController.bufferId === (bufferElementIndex + 1)) {
-                requestElement.textContent = `${requestStructureFromSetterController.generatorId}.${requestStructureFromSetterController.requestId}`;
-            }
-            bufferElement.appendChild(requestElement);
-            requestElement.show();
-        });
-        const timeElementForRefuse = timeTemplate.cloneNode(true);
-        const timeElementForTimer = timeTemplate.cloneNode(true);
-        timeElementForTimer.textContent = `${sortedHandler.releasedTime.toFixed(6)}`;
-        refuseLine.appendChild(timeElementForRefuse);
-        timeLine.appendChild(timeElementForTimer);
-        timeElementForRefuse.show();
-        timeElementForTimer.show();
-        timeLine.show();
-    });
+function setterStepTimingDiagram(requestStructureFromSetterController) {
     generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
         const requestElement = requestTemplate.cloneNode(true);
         if ((generatorElementIndex + 1) === requestStructureFromSetterController.generatorId) {
@@ -120,19 +75,21 @@ function stepTimingDiagram(requestStructureFromSetterController) {
         generatorElement.appendChild(requestElement);
         requestElement.show();
     });
+
     model.handlerController.handlersList.forEach((handler, handlerElementIndex) => {
         const requestElement = requestTemplate.cloneNode(true);
-        console.log(handler);
-        if (handler.request !== undefined) {
+        if (handler.request !== null && handler.request.releasedTime > requestStructureFromSetterController.generatedTime) {
             requestElement.textContent = `${handler.request.generatorId}.${handler.request.requestId}`;
         }
         handlerLines.querySelectorAll('.handler')[handlerElementIndex].appendChild(requestElement);
         requestElement.show();
     });
+
     bufferLines.querySelectorAll('.buffer').forEach((bufferElement, bufferElementIndex) => {
         const requestElement = requestTemplate.cloneNode(true);
-        if (requestStructureFromSetterController.bufferId === (bufferElementIndex + 1)) {
-            requestElement.textContent = `${requestStructureFromSetterController.generatorId}.${requestStructureFromSetterController.requestId}`;
+        const bufferUnitById = model.buffer.getBufferById(bufferElementIndex + 1);
+        if (bufferUnitById !== null && bufferUnitById.getRequest() !== null) {
+            requestElement.textContent = `${bufferUnitById.getRequest().generatorId}.${bufferUnitById.getRequest().requestId}`;
         }
         bufferElement.appendChild(requestElement);
         requestElement.show();
@@ -151,6 +108,44 @@ function stepTimingDiagram(requestStructureFromSetterController) {
     timeLine.show();
 }
 
+function getterStepTimingDiagram(requestStructureFromGetterController) {
+    requestStructureFromGetterController.forEach(requestStructure => {
+        if (requestStructure.oldRequest.isShown === false) {
+            generatorLines.querySelectorAll('.generator').forEach((generatorElement, generatorElementIndex) => {
+                const requestElement = requestTemplate.cloneNode(true);
+                generatorElement.appendChild(requestElement);
+                requestElement.show();
+            });
+            requestStructure.handlersState.forEach((request, handlerIndex) => {
+                const requestElement = requestTemplate.cloneNode(true);
+                if (request !== null && request.releasedTime >= requestStructure.oldRequest.releasedTime &&
+                    request.handlerId !== requestStructure.oldRequest.handlerId) {
+                    requestElement.textContent = `${request.generatorId}.${request.requestId}`;
+                }
+                requestStructure.oldRequest.isShown = true;
+                handlerLines.querySelectorAll('.handler')[handlerIndex].appendChild(requestElement);
+                requestElement.show();
+            });
+            requestStructure.buffersState.forEach((request, bufferIndex) => {
+                const requestElement = requestTemplate.cloneNode(true);
+                if (request !== null) {
+                    requestElement.textContent = `${request.generatorId}.${request.requestId}`;
+                }
+                bufferLines.querySelectorAll('.buffer')[bufferIndex].appendChild(requestElement);
+                requestElement.show();
+            });
+            const timeElementForRefuse = timeTemplate.cloneNode(true);
+            const timeElementForTimer = timeTemplate.cloneNode(true);
+            timeElementForTimer.textContent = `${requestStructure.oldRequest.releasedTime.toFixed(6)}`;
+            refuseLine.appendChild(timeElementForRefuse);
+            timeLine.appendChild(timeElementForTimer);
+            timeElementForRefuse.show();
+            timeElementForTimer.show();
+            timeLine.show();
+        }
+    });
+}
+
 generateButtonElement.onclick = () => {
     document.querySelectorAll('body .inputs_block input').forEach((inputElement) => {
         inputElement.disabled = true;
@@ -164,28 +159,18 @@ generateButtonElement.onclick = () => {
     stepForwardButtonElement.show();
     initTimingDiagram(model);
     timingDiagram.show();
-    //chartDrawer.initChart(model);
 };
 
 stepForwardButtonElement.onclick = () => {
     if (requestsCounter !== (model.generatorController.requestsList.length)) {
-        const requestStructureFromSetterController = model.setterController.work(model.generatorController.requestsList[requestsCounter]);
-        stepTimingDiagram(requestStructureFromSetterController);
         const requestStructureFromGetterController = model.getterController.work(model.generatorController.requestsList[requestsCounter]);
-        //console.log(requestStructureFromSetterController, requestStructureFromGetterController);
-        //chartDrawer.drawRequest(requestStructureFromSetterController, requestStructureFromGetterController);
-        //console.log(`Заявка-${requestStructureFromSetterController.requestId} была создана в ${requestStructureFromSetterController.generatedTime} генератором-${requestStructureFromSetterController.generatorId} и отправлена в буфер-${requestStructureFromSetterController.bufferId}`);
-        if (requestStructureFromSetterController.isRefused) {
-            //console.log(`Заявка-${requestStructureFromSetterController.refusedRequestId} была отказана`);
-        }
-        if (requestStructureFromGetterController !== []) {
-            requestStructureFromGetterController.forEach(request => {
-                //console.log(`Заявка-${request.requestId} была взята из буфера-${request.bufferId} в ${request.bufferedTime} и поставлена в работу на прибор-${request.handlerId}, работа окончена в ${request.releasedTime}`);
-            });
-        }
+        getterStepTimingDiagram(requestStructureFromGetterController);
+        const requestStructureFromSetterController = model.setterController.work(model.generatorController.requestsList[requestsCounter]);
+        setterStepTimingDiagram(requestStructureFromSetterController);
         requestsCounter++;
     } else if (model.buffer.isAnyBufferUnitFilled()) {
-        const requestStructureFromGetterController = model.getterController.freeBuffer();
-        console.log(`Заявка-${requestStructureFromGetterController.requestId} была взята из буфера-${requestStructureFromGetterController.bufferId} в ${requestStructureFromGetterController.bufferedTime} и поставлена в работу на прибор-${requestStructureFromGetterController.handlerId}, работа окончена в ${requestStructureFromGetterController.releasedTime}`);
+        const requestFreeBufferStructure = model.getterController.freeBuffer();
+        console.log(model.buffer.getBuffersList());
+        //getterStepTimingDiagram([requestFreeBufferStructure]);
     }
 }

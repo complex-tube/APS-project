@@ -7,43 +7,56 @@ class GetterController {
     }
 
     work(request) {
-        // if (freeHandler !== null) {
-        //     if (this.buffer.isAnyBufferUnitFree() !== true) {
-        //         this.sendRequestToHandler(this.getRequestFromBuffer(request.generatedTime));
-        //     }
-        // }
-        const requestList = [];
-        while (this.handlerController.getFreeHandler(request.generatedTime) !== null) {
+        const freeHandlers = this.handlerController.getFreeHandlers(request.generatedTime);
+        const returnStates = [];
+        const buffersList = [];
+        for (let bufferCounter = 0; bufferCounter < this.buffer.bufferLength; bufferCounter++) {
+            buffersList.push(this.buffer.getBufferById(bufferCounter + 1).getRequest());
+        }
+        freeHandlers.sort((firstHandler, secondHandler) => firstHandler.releasedTime - secondHandler.releasedTime);
+        freeHandlers.forEach((handler, handlerIndex) => {
+            const handlersList = [];
+            for (let handlerCounter = 0; handlerCounter < this.handlerController.handlersList.length; handlerCounter++) {
+                handlersList.push(this.handlerController.handlersList[handlerCounter].request);
+            }
+            if (handler.request !== null) {
+                returnStates.push({
+                    freeHandler: handler,
+                    oldRequest: handler.request,
+                    handlersState: handlersList,
+                    buffersState: buffersList
+                });
+            }
+        })
+        while (this.handlerController.getFreeHandler(request.generatedTime, !this.buffer.isAnyBufferUnitFilled(), true) !== null) {
             const requestFromBuffer = this.getRequestFromBuffer(request.generatedTime);
-            if (requestFromBuffer !== undefined) {
-                const request = this.sendRequestToHandler(requestFromBuffer);
-                requestList.push(request);
+            if (requestFromBuffer !== null) {
+                this.sendRequestToHandler(requestFromBuffer);
             } else {
                 break;
             }
         }
-        // if (freeHandler !== null) {
-        //     const requestFromBuffer = this.getRequestFromBuffer(request.generatedTime);
-        //     return this.sendRequestToHandler(requestFromBuffer);
-        // }
-        return requestList;
+        console.log(returnStates);
+        return returnStates;
     }
 
     freeBuffer() {
         const returnStructure = {
-            requestId: 0,
-            bufferId: 0,
-            handlerId: 0,
-            bufferedTime: 0,
-            releasedTime: 0
+            oldRequest: null,
+            handlersState: [],
+            buffersState: [],
         }
-        const request = this.buffer.getRequest(this.handlerController.getMinHandler().releasedTime);
+        const minHandler = this.handlerController.getMinHandler();
+        returnStructure.oldRequest = minHandler.request;
+        for (let handlerCounter = 0; handlerCounter < this.handlerController.handlersList.length; handlerCounter++) {
+            returnStructure.handlersState.push(this.handlerController.handlersList[handlerCounter].request);
+        }
+        for (let bufferCounter = 0; bufferCounter < this.buffer.bufferLength; bufferCounter++) {
+            returnStructure.buffersState.push(this.buffer.getBufferById(bufferCounter + 1).getRequest());
+        }
+        const request = this.buffer.getRequest(minHandler.releasedTime);
         this.sendLastRequestFromBuffer(request);
-        returnStructure.requestId = request.requestId;
-        returnStructure.bufferId = request.bufferId;
-        returnStructure.handlerId = request.handlerId;
-        returnStructure.bufferedTime = request.bufferedTime;
-        returnStructure.releasedTime = request.releasedTime;
+        console.log(returnStructure);
         return returnStructure;
     }
 

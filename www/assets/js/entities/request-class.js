@@ -8,6 +8,8 @@ class Request {
     bufferedTime = 0;
     releasedTime = 0;
     refusedTime = 0;
+    isShown = false;
+
     constructor(generationTime, generatorId) {
         Request.requestId++;
         this.requestId = Request.requestId;
